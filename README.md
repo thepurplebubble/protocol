@@ -71,46 +71,6 @@ The backend consists of a mesh network of REST API servers that communicate with
   }
   ```
 
-### Server Behavior Monitoring
-
-#### Monitoring Mechanism
-1. **Server Reputation System**: Implement a reputation system where servers rate each other based on their behavior. Each server maintains a reputation score for other servers it interacts with.
-   
-2. **Transaction Logs**: Servers keep logs of transactions, including message relays and responses from other servers. These logs help in detecting patterns of misbehavior.
-   
-3. **Periodic Audits**: Servers periodically audit each other by sending known test packets. If a server fails to relay these packets, it is flagged for potential misbehavior.
-
-4. **Quorum-Based Decision Making**: Decisions about server behavior are made based on the consensus of multiple servers. If a majority of servers flag a particular server as misbehaving, it is blacklisted from the network.
-
-5. **Reporting Mechanism**: Clients and servers can report suspicious activity. These reports are reviewed by the network and appropriate action is taken.
-
-#### Packet Structure for Reporting
-- **Misbehavior Report Packet**
-  ```json
-  {
-    "reporter_id": "server_or_client_id",
-    "reported_server_id": "suspected_server_id",
-    "timestamp": "ISO_8601_timestamp",
-    "evidence": "base64_encoded_evidence_data"
-  }
-  ```
-
-#### Quorum-Based Decision Example
-- **Quorum Decision Packet**
-  ```json
-  {
-    "type": "quorum_decision",
-    "reported_server_id": "suspected_server_id",
-    "votes": {
-      "server_id_1": "vote_value",
-      "server_id_2": "vote_value",
-      ...
-    },
-    "final_decision": "blacklisted/whitelisted",
-    "timestamp": "ISO_8601_timestamp"
-  }
-  ```
-
 ## Frontend
 
 ### Overview
