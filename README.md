@@ -3,7 +3,7 @@
 ## Backend
 
 ### Overview
-The backend consists of a mesh network of REST API servers that communicate with each other to transmit client packets. Clients use separate servers for transmission (TX) and reception (RX) to protect their anonymity. Clients send messages by POSTing to the TX server and retrieve messages by GETting from the RX server. Servers must implement mechanisms to detect and handle misbehaving nodes that refuse to relay messages or drop packets.
+The backend consists of a mesh network of REST API servers that communicate with each other to transmit client packets. Clients use separate servers for transmission (TX) and reception (RX) to protect their anonymity. Clients send messages to the TX server and retrieve messages from the RX server. Servers must implement mechanisms to detect and handle misbehaving nodes that refuse to relay messages or drop packets. Any encrypted data will be base64 encoded and stored as a string. Files can be embedded using GH markdown syntax in messages. The recommended file distribution platform is IPFS.
 
 ### Key Features
 1. **Mesh Network of REST API Servers**: Servers interconnect to relay client packets.
@@ -16,66 +16,55 @@ The backend consists of a mesh network of REST API servers that communicate with
 8. **Anonymous & Transparent Modes**: Users are given the option to sacrifice some anonymity in order to make calls or message faster. This will still be kept as secure as possible by the restraints of the WebRTC protocol.
 
 ### Anonymous Mode
-This mode uses GET and POST packets to the mesh network of REST APIs. By utilizing a different server to send and receive messages, the user's identity is kept secret. This is because when sending and receiving messages only the recipients key is visible, whether it be your key that you are trying to fetch the messages for, or your friends key that you are sending messages to. With a separate tx and rx server, these keys will never be associated together unless the servers are owned by the same person. This is an issue the protocol developers plan on addressing in the future.
+This mode uses the TX and RX servers in order to send and receive messages. By utilizing a different server for these two functions, the user's identity is kept secret. This is because when sending and receiving messages only the recipients key is visible, whether it be your key that you are trying to fetch the messages for, or your friends key that you are sending messages to. With a separate tx and rx server, these keys will never be associated together unless the servers are owned by the same person. This is an issue the protocol developers plan on addressing in the future.
 
 ### Transparent Mode
 Transparent mode makes use of WebRTC in order to send packets between clients faster. The content of these packets will still be encrypted. However, the owner of the STUN server in use will be able to see which 2 clients are communicating. These clients will need to expose their public keys at the beginning of contact in order to discover each other and start the transaction, thus breaching anonymity.
 
-### Packet Structure (JSON)
-- **Client Message Packet (POST)**
-  ```json
-  {
-    "recipient": "recipient_public_key",
-    "message": "base64_encoded_encrypted_json",
-    "signature": "base64_encoded_encrypted_signature"
-  }
-  ```
-  - **Encrypted JSON Object**
+### REST API Endpoints
+- `/fetch`
+  - Method Type: `POST`
+  - Request Body:
+    ```json
+    {
+      "recipient": "recipient_public_key"
+    }
+    ```
+  - Response Body:
+    ```json
+    {
+      "recipient": "recipient_public_key",
+      "message": "encrypted_json",
+      "signature": "encrypted_json"
+    }
+    ```
+- `/send`
+  - Method Type: `POST`
+  - Request Body:
+    ```json
+    {
+      "recipient": "recipient_public_key",
+      "message": "encrypted_json",
+      "signature": "encrypted_signature"
+    }
+    ```
+### Objects
+- `message`
+  - Content:
     ```json
     {
       "sender": "sender_public_key",
+      "type": "MESSAGE|EDIT|DELETE|REACT",
       "content": "message_content",
-      "uuid": "message_uuid",
+      "id": "message_id",
       "timestamp": "ISO_8601_timestamp"
     }
     ```
-  - **Encrypted Signature**
-    ```json
-    {
-      "signature": "base64_encoded_signature_of_encrypted_message"
-    }
-    ```
-
-- **Message Retrieval Packet (GET)**
-  ```json
-  {
-    "public_key": "client_public_key",
-    "signature": "base64_encoded_signature_of_phrase"
-  }
-  ```
-  - **Phrase for Signature**
-    ```plaintext
-    "I AM WHO I SAY I AM"
-    ```
-
-### Example Encrypted Message Content
-- **Example Encrypted JSON Object (Base64 Encoded)**
-  ```json
-  {
-    "sender": "sender_public_key",
-    "content": "Hello, this is a test message!",
-    "uuid": "123e4567-e89b-12d3-a456-426614174000",
-    "timestamp": "2024-06-15T12:34:56Z"
-  }
-  ```
-
-### Example Encrypted Signature
-- **Example Signature of Encrypted Message (Base64 Encoded)**
-  ```json
-  {
-    "signature": "base64_encoded_signature"
-  }
-  ```
+  - Types:
+    - `MESSAGE`: A new message will be created in the chat with the specified id.
+    - `EDIT`: The message with the given id will be updated to the new content.
+    - `DELETE`: The message with the given id will be removed from the chat. Anything in the content field will be ignored.
+    - `REACT`: A reaction will be added to the given message id. The reaction name will be stored in the content field of the packet in the form of a **:reaction:**. Users must have the reaction in the reactions database on their client for it to appear.
 
 ## Frontend
 
@@ -95,44 +84,10 @@ Clients connect to the tx and rx servers with the lowest load from their known l
 
 ## General Notes
 
-### Decentralization
-The plan is to maintain a decentralized network, subject to change based on public meetings.
-
 ### Security Measures
 - **Message Signing**: Messages are signed with keys to prevent MITM attacks.
 - **Dynamic Server List Sharing**: Ensures no single server is trusted. Initial connections to compromised servers can be detected through key signatures.
 - **Login with Private Key**: Users log in using a private key and send messages using the recipient's public key. Usernames are used in the UI.
-### Packet Structure (JSON)
-- **Server List Request Packet**
-  ```json
-  {
-    "type": "server_list_request",
-    "requester_id": "client_or_server_id",
-    "timestamp": "ISO_8601_timestamp"
-  }
-  ```
-- **Server List Response Packet**
-  ```json
-  {
-    "type": "server_list_response",
-    "known_servers": ["server_id_1", "server_id_2", ...],
-    "timestamp": "ISO_8601_timestamp"
-  }
-  ```
-
-### Example of Packet JSON Structures
-- **Message Signing Example**
-  ```json
-  {
-    "type": "signed_message",
-    "message": {
-      "content": "original_message_content",
-      "timestamp": "ISO_8601_timestamp"
-    },
-    "signature": "message_signature",
-    "public_key": "sender_public_key"
-  }
-  ```
 
 ## Conclusion
 This document outlines the protocol's backend and frontend architecture, security measures, and packet structures in JSON. The protocol aims for a decentralized, secure communication network leveraging a mesh of REST API servers, dynamic server lists, and strong encryption practices, while implementing mechanisms to detect and handle misbehaving servers.
