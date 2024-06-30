@@ -18,6 +18,9 @@ The backend consists of a mesh network of REST API servers that communicate with
 ### Anonymous Mode
 This mode uses GET and POST packets to the mesh network of REST APIs. By utilizing a different server to send and receive messages, the user's identity is kept secret. This is because when sending and receiving messages only the recipients key is visible, whether it be your key that you are trying to fetch the messages for, or your friends key that you are sending messages to. With a separate tx and rx server, these keys will never be associated together unless the servers are owned by the same person. This is an issue the protocol developers plan on addressing in the future.
 
+### Transparent Mode
+Transparent mode makes use of WebRTC in order to send packets between clients faster. The content of these packets will still be encrypted. However, the owner of the STUN server in use will be able to see which 2 clients are communicating. These clients will need to expose their public keys at the beginning of contact in order to discover each other and start the transaction, thus breaching anonymity.
+
 ### Packet Structure (JSON)
 - **Client Message Packet (POST)**
   ```json
