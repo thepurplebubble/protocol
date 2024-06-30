@@ -74,7 +74,7 @@ The backend consists of a mesh network of REST API servers that communicate with
 ## Frontend
 
 ### Overview
-Clients connect to the tx and rx servers with the lowest load from their known list of servers. Security improves over time as more servers are learned, reducing dependence on the default servers. A local contact list is used to manage metadata such as profile pictures and names. Clients send fake GET and POST packets to enhance anonymity.
+Clients connect to the tx and rx servers with the lowest load from their known list of servers. Security improves over time as more servers are learned, reducing dependence on the default servers. A local contact list is used to manage metadata such as profile pictures and names.
 
 ### Key Features
 1. **Optimal Server Connection**: Connect to the server with the lowest load.
@@ -96,7 +96,6 @@ The plan is to maintain a decentralized network, subject to change based on publ
 - **Message Signing**: Messages are signed with keys to prevent MITM attacks.
 - **Dynamic Server List Sharing**: Ensures no single server is trusted. Initial connections to compromised servers can be detected through key signatures.
 - **Login with Private Key**: Users log in using a private key and send messages using the recipient's public key. Usernames are used in the UI.
-- **Dual Proxy**: The clients will use separate proxy servers for their TX and RX traffic in case the TX and RX servers are owned by the same person. That way their TX and RX traffic cannot be mapped back to the same IP address by a bad actor.
 ### Packet Structure (JSON)
 - **Server List Request Packet**
   ```json
