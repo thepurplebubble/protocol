@@ -13,6 +13,10 @@ The backend consists of a mesh network of REST API servers that communicate with
 5. **Message Retrieval**: Clients can request undelivered messages periodically.
 6. **RSA 4096 Encryption**: Messages are encrypted using RSA 4096 keys to ensure security and privacy.
 7. **Signature Verification**: Messages include a signature that is encrypted separately to prevent unauthorized verification.
+8. **Anonymous & Transparent Modes**: Users are given the option to sacrifice some anonymity in order to make calls or message faster. This will still be kept as secure as possible by the restraints of the WebRTC protocol.
+
+### Anonymous Mode
+This mode uses GET and POST packets to the mesh network of REST APIs. By utilizing a different server to send and receive messages, the user's identity is kept secret. This is because when sending and receiving messages only the recipients key is visible, whether it be your key that you are trying to fetch the messages for, or your friends key that you are sending messages to. With a separate tx and rx server, these keys will never be associated together unless the servers are owned by the same person. This is an issue the protocol developers plan on addressing in the future.
 
 ### Packet Structure (JSON)
 - **Client Message Packet (POST)**
