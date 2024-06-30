@@ -11,9 +11,8 @@ The backend consists of a mesh network of REST API servers that communicate with
 3. **Message Broadcasting**: Client messages are broadcasted to find the recipient's server.
 4. **Message Retention for Undelivered Messages**: Undelivered messages are stored in a database with a seven-day expiration.
 5. **Message Retrieval**: Clients can request undelivered messages periodically.
-6. **RSA 2048 Encryption**: Messages are encrypted using RSA 2048 to ensure security and privacy.
+6. **RSA 4096 Encryption**: Messages are encrypted using RSA 4096 keys to ensure security and privacy.
 7. **Signature Verification**: Messages include a signature that is encrypted separately to prevent unauthorized verification.
-8. **Server Behavior Monitoring**: Mechanisms to detect and handle misbehaving servers.
 
 ### Packet Structure (JSON)
 - **Client Message Packet (POST)**
