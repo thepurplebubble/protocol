@@ -48,6 +48,19 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
       "signature": "encrypted_signature"
     }
     ```
+- `/servers`
+  - Method Type: `GET`
+  - Response Body:
+    ```json
+    {
+      "servers": [
+        {
+          "ip": "IPv4|IPv6|DOMAIN",
+          "port": "8080"
+        }
+      ]
+    }
+    ```
 ### Objects
 - `message`
   - Content:
