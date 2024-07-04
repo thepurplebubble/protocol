@@ -17,10 +17,10 @@ The backend consists of a mesh network of REST API servers that communicate with
 7. **Signature Verification**: Messages include a signature that is encrypted separately to prevent unauthorized verification.
 8. **Anonymous & Transparent Modes**: Users are given the option to sacrifice some anonymity in order to make calls or message faster. This will still be kept as secure as possible by the restraints of the WebRTC protocol.
 
-### Anonymous Mode
+### Anonymous Mode (REST API)
 This mode uses the TX and RX servers in order to send and receive messages. By utilizing a different server for these two functions, the user's identity is kept secret. This is because when sending and receiving messages only the recipients key is visible, whether it be your key that you are trying to fetch the messages for, or your friends key that you are sending messages to. With a separate TX and RX server, these keys will never be associated together unless the servers are owned by the same person. This is an issue the protocol developers plan on addressing in the future.
 
-### Transparent Mode
+### Transparent Mode (WebRTC)
 Transparent mode makes use of WebRTC in order to send packets between clients faster. The content of these packets will still be encrypted. However, the owner of the STUN server in use will be able to see which 2 clients are communicating. These clients will need to expose their public keys at the beginning of contact in order to discover each other and start the transaction, thus breaching anonymity.
 
 ### REST API Endpoints
