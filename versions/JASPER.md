@@ -9,7 +9,7 @@ The backend consists of a mesh network of REST API servers that communicate with
 
 ### Key Features
 1. **Mesh Network of REST API Servers**: Servers interconnect to relay client packets.
-2. **Separate TX and RX Servers**: Clients use different servers for sending and receiving messages to protect anonymity.
+2. **Separate TX and RX Servers**: Clients use different servers for sending and receiving messages to protect anonymity. Clients should use a separate server for EACH key they interact with. Ex. sending a message in a GC or having multiple receive keys configured.
 3. **Message Broadcasting**: Client messages are broadcasted to find the recipient's server.
 4. **Message Retention for Undelivered Messages**: Undelivered messages are stored in a database with a seven-day expiration.
 5. **Message Retrieval**: Clients can request undelivered messages periodically.
