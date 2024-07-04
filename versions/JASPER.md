@@ -37,6 +37,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     {
       "recipient": "recipient_public_key",
       "message": "encrypted_json",
+      "hash": "message_sha256",
       "signature": "encrypted_json"
     }
     ```
@@ -47,6 +48,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     {
       "recipient": "recipient_public_key",
       "message": "encrypted_json",
+      "hash": "message_sha256",
       "signature": "encrypted_signature"
     }
     ```
