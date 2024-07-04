@@ -29,18 +29,25 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
   - Request Body:
     ```json
     {
-      "recipient": "recipient_public_key"
+      "recipient": "recipient_public_key",
+      "hashes": [
+        "message_sha256"
+      ]
     }
     ```
   - Response Body:
     ```json
-    {
-      "recipient": "recipient_public_key",
-      "message": "encrypted_json",
-      "hash": "message_sha256",
-      "signature": "encrypted_json"
-    }
+    [
+      {
+        "recipient": "recipient_public_key",
+        "message": "encrypted_json",
+        "hash": "message_sha256",
+        "signature": "encrypted_json"
+      }
+    ]
     ```
+  - General Notes:  
+    You can provide either recipient OR hashes. Recipient is intended for clients fetching messages and hashes are intended for servers fetching messages. The presence of the recipient field will be checked first by a server when the endpoint is called.
 - `/send`
   - Method Type: `POST`
   - Request Body:
@@ -76,6 +83,8 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
       ]
     }
     ```
+  - General Notes:  
+    Server A will send its known servers list to Server B. Server B will respond with any servers Server A did not have in its known servers list. Then, Server B will add any servers it does not already have to its known server list. 
 - `/sync/messages`
   - Method Type: `POST`
   - Request Body:
@@ -94,6 +103,9 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
       ]
     }
     ```
+  - General Notes:  
+    Server A will send the hashes of all the messages it has stored to Server B. Server B will respond with the hashes of any messages Server A does not have stored. Then, Server B will fetch any messages it does not already have from Server A based on their hashes.
+
 ### Objects
 - `message`
   - Content:
