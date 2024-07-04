@@ -5,7 +5,7 @@ Codename: Jasper
 ## Backend
 
 ### Overview
-The backend consists of a mesh network of REST API servers that communicate with each other to transmit client packets. Clients use separate servers for transmission (TX) and reception (RX) to protect their anonymity. Clients send messages to the TX server and retrieve messages from the RX server. Servers must implement mechanisms to detect and handle misbehaving nodes that refuse to relay messages or drop packets. Any encrypted data will be base64 encoded and stored as a string. Files can be embedded using GH markdown syntax in messages. The recommended file distribution platform is IPFS.
+The backend consists of a mesh network of REST API servers that communicate with each other to transmit client packets. Clients use separate servers for transmission (TX) and reception (RX) to protect their anonymity. Clients send messages to the TX server and retrieve messages from the RX server. Servers must implement mechanisms to detect and handle misbehaving nodes that refuse to relay messages or drop packets. Any encrypted data will be base64 encoded and stored as a string. Files can be embedded using GH markdown syntax in messages. The recommended file distribution platform is IPFS. Servers will store messages in a cache for 7 days before they expire. It is recommended to use Redis to implement this functionality due to its speed.
 
 ### Key Features
 1. **Mesh Network of REST API Servers**: Servers interconnect to relay client packets.
