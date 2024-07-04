@@ -149,6 +149,3 @@ Clients connect to the TX and RX servers with the lowest load from their known l
 - **Message Signing**: Messages are signed with keys to prevent MITM attacks.
 - **Dynamic Server List Sharing**: Ensures no single server is trusted. Initial connections to compromised servers can be detected through key signatures.
 - **Login with Private Key**: Users log in using a private key and send messages using the recipient's public key. Usernames are used in the UI.
-
-## Conclusion
-This document outlines the protocol's backend and frontend architecture, security measures, and packet structures in JSON. The protocol aims for a decentralized, secure communication network leveraging a mesh of REST API servers, dynamic server lists, and strong encryption practices, while implementing mechanisms to detect and handle misbehaving servers.
