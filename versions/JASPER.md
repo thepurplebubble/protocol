@@ -87,12 +87,12 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     ```
   - General Notes:  
     Server A will send its known servers list to Server B. Server B will respond with any servers Server A did not have in its known servers list. Then, Server B will add any servers it does not already have to its known server list. 
-- `/sync/messages`
+- `/sync/hashes`
   - Method Type: `POST`
   - Request Body:
     ```json
     {
-      "messages": [
+      "hashes": [
         "message_sha256"
       ]
     }
@@ -100,7 +100,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
   - Response Body:
     ```json
     {
-      "messages": [
+      "hashes": [
         "message_sha256"
       ]
     }
