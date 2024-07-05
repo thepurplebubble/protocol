@@ -37,14 +37,16 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     ```
   - Response Body:
     ```json
-    [
-      {
-        "recipient": "recipient_public_key",
-        "message": "encrypted_json",
-        "hash": "message_sha256",
-        "signature": "encrypted_json"
-      }
-    ]
+    {
+      "messages": [
+        {
+          "recipient": "recipient_public_key",
+          "message": "encrypted_json",
+          "hash": "message_sha256",
+          "signature": "encrypted_json"
+        }
+      ]
+    }
     ```
   - General Notes:  
     You can provide either recipient OR hashes. Recipient is intended for clients fetching messages and hashes are intended for servers fetching messages. The presence of the recipient field will be checked first by a server when the endpoint is called.
