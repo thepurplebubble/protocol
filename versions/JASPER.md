@@ -24,12 +24,11 @@ This mode uses the TX and RX servers in order to send and receive messages. By u
 Transparent mode makes use of WebRTC in order to send packets between clients faster. The content of these packets will still be encrypted. However, the owner of the STUN server in use will be able to see which 2 clients are communicating. These clients will need to expose their public keys at the beginning of contact in order to discover each other and start the transaction, thus breaching anonymity.
 
 ### REST API Endpoints
-- `/fetch`
+- `/fetch/by_hash`
   - Method Type: `POST`
   - Request Body:
     ```json
     {
-      "recipient": "recipient_public_key",
       "hashes": [
         "message_sha256"
       ]
@@ -49,7 +48,32 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     }
     ```
   - General Notes:  
-    You can provide either recipient OR hashes. Recipient is intended for clients fetching messages and hashes are intended for servers fetching messages. The presence of the recipient field will be checked first by a server when the endpoint is called.
+    This endpoint is used for the second stage of message syncing after servers have already requested /sync/hashes to retrieve the hashes they are missing.
+- `/fetch/by_recipient`
+  - Method Type: `POST`
+  - Request Body:
+    ```json
+    {
+      "recipient": "recipient_public_key",
+      "timestamp": "current_unix_time_millis",
+      "signed_timestamp": "signed_timestamp"
+    }
+    ```
+  - Response Body:
+    ```json
+    {
+      "messages": [
+        {
+          "recipient": "recipient_public_key",
+          "message": "encrypted_json",
+          "hash": "message_sha256",
+          "signature": "encrypted_json"
+        }
+      ]
+    }
+    ```
+  - General Notes:
+    This endpoint is for clients fetching messages that they have not yet received. The timestamp and signature of it is used for verification of their identity so that the server can safely discard messages.
 - `/send`
   - Method Type: `POST`
   - Request Body:
