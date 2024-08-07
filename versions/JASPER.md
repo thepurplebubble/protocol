@@ -138,6 +138,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     ```json
     {
       "sender": "sender_public_key",
+      "salt": "random_string",
       "channel_id": "UUID",
       "type": "MESSAGE|EDIT|DELETE|REACT",
       "content": "message_content",
@@ -146,7 +147,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
     }
     ```
   - General Notes:  
-    The channel ID will be generated when the first message is ever sent. In DMs, this will most likely be disregarded although may be used for message sync in the future. In GCs, the same message packet will be sent out multiple times (once for each recipient) via a different server each time to increase anonymity. Clients can then determine which GC it was sent in based on the channel ID that is included in the encrypted message body.
+    The channel ID will be generated when the first message is ever sent. It will be in the form of a randomly generated UUID. Clients will use this to negotiate GCs and messaging syncing across multiple devices. Under the hood, each client device will have its own key pair but the client will mask this functionality with the contacts system. The message salt SHOULD be 8 bytes in base64 encoding. The message includes a salt to prevent servers from determining the members of a GC based on similar message contents.
   - Types:
     - `MESSAGE`: A new message will be created in the chat with the specified id.
     - `EDIT`: The message with the given id will be updated to the new content.
