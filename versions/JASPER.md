@@ -24,6 +24,23 @@ This mode uses the TX and RX servers in order to send and receive messages. By u
 Transparent mode makes use of WebRTC in order to send packets between clients faster. The content of these packets will still be encrypted. However, the owner of the STUN server in use will be able to see which 2 clients are communicating. These clients will need to expose their public keys at the beginning of contact in order to discover each other and start the transaction, thus breaching anonymity.
 
 ### REST API Endpoints
+- `/discard`
+  - Method Type: `POST`
+  - Request Body:
+    ```json
+    {
+      "recipient": "recipient_public_key",
+      "timestamp": "current_unix_time_millis",
+      "signed_timestamp": "signed_timestamp",
+      "hashes": [
+        "message_sha256"
+      ]
+    }
+    ```
+  - Response Body:  
+    *200 OK if request could be completed otherwise 500 Internal Server Error.*
+  - General Notes:  
+    Server will only accept the request if the given timestamp and signature is from within the past hour and has not yet been used.
 - `/fetch/by_hash`
   - Method Type: `POST`
   - Request Body:
@@ -72,7 +89,7 @@ Transparent mode makes use of WebRTC in order to send packets between clients fa
       ]
     }
     ```
-  - General Notes:
+  - General Notes:  
     This endpoint is for clients fetching messages that they have not yet received. The timestamp and signature of it is used for verification of their identity so that the server can safely discard messages.
 - `/send`
   - Method Type: `POST`
